@@ -1,0 +1,767 @@
+$initial-delay: 0;
+
+html,
+body {
+    overflow-x: hidden;
+}
+
+html {
+    &::-webkit-scrollbar {
+        width: 16px;
+        height: 16px;
+        background: none;
+    }
+
+    &::-webkit-scrollbar-thumb,
+    &::-webkit-scrollbar-button {
+        width: 16px;
+        height: 16px;
+        background: silver;
+        box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px gray;
+        border: 1px solid;
+        border-color: silver #000 #000 silver;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: #ccc;
+    }
+
+    &::-webkit-scrollbar-button {
+        background-repeat: no-repeat;
+        background-size: 16px;
+    }
+
+    &::-webkit-scrollbar-button:single-button:vertical:decrement {
+        background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgLTAuNSAxNiAxNiIgc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIj4KPG1ldGFkYXRhPk1hZGUgd2l0aCBQaXhlbHMgdG8gU3ZnIGh0dHBzOi8vY29kZXBlbi5pby9zaHNoYXcvcGVuL1hieHZOajwvbWV0YWRhdGE+CjxwYXRoIHN0cm9rZT0iIzAwMDAwMCIgZD0iTTcgNWgxTTYgNmgzTTUgN2g1TTQgOGg3IiAvPgo8L3N2Zz4=');
+    }
+
+    &::-webkit-scrollbar-button:single-button:vertical:increment {
+        background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgLTAuNSAxNiAxNiIgc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIj4KPG1ldGFkYXRhPk1hZGUgd2l0aCBQaXhlbHMgdG8gU3ZnIGh0dHBzOi8vY29kZXBlbi5pby9zaHNoYXcvcGVuL1hieHZOajwvbWV0YWRhdGE+CjxwYXRoIHN0cm9rZT0iIzAwMDAwMCIgZD0iTTQgNWg3TTUgNmg1TTYgN2gzTTcgOGgxIiAvPgo8L3N2Zz4=');
+    }
+
+    &::-webkit-scrollbar-button:single-button:horizontal:decrement {
+        background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgLTAuNSAxNiAxNiIgc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIj4KPG1ldGFkYXRhPk1hZGUgd2l0aCBQaXhlbHMgdG8gU3ZnIGh0dHBzOi8vY29kZXBlbi5pby9zaHNoYXcvcGVuL1hieHZOajwvbWV0YWRhdGE+CjxwYXRoIHN0cm9rZT0iIzAwMDAwMCIgZD0iTTggM2gxTTcgNGgyTTYgNWgzTTUgNmg0TTYgN2gzTTcgOGgyTTggOWgxIiAvPgo8L3N2Zz4=');
+    }
+
+    &::-webkit-scrollbar-button:single-button:horizontal:increment {
+        background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgLTAuNSAxNiAxNiIgc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIj4KPG1ldGFkYXRhPk1hZGUgd2l0aCBQaXhlbHMgdG8gU3ZnIGh0dHBzOi8vY29kZXBlbi5pby9zaHNoYXcvcGVuL1hieHZOajwvbWV0YWRhdGE+CjxwYXRoIHN0cm9rZT0iIzAwMDAwMCIgZD0iTTYgM2gxTTYgNGgyTTYgNWgzTTYgNmg0TTYgN2gzTTYgOGgyTTYgOWgxIiAvPgo8L3N2Zz4=');
+    }
+
+    &::-webkit-scrollbar-corner {
+        background: silver;
+    }
+}
+
+body {
+    background-color: #2b0f75;
+}
+
+section {
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+#canvas-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    z-index: -1;
+    pointer-events: none;
+    user-select: none;
+    /* 
+    when changing theme to light mode
+    animation: fade-out 0.5s ease-in-out forwards;
+    animation-delay: 1s;
+    */
+}
+
+#canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    user-select: none;
+    pointer-events: none;
+}
+
+.scale-in {
+    animation: scale-in 0.2s ease-in-out forwards;
+    transform: scale(0);
+}
+
+.scale-in-bounce {
+    animation: scale-in-bounce 0.3s ease-in-out forwards, fade-in 0.1s ease-in-out forwards;
+    transform: scale(0);
+    opacity: 0;
+    animation-delay: ($initial-delay + 0.2 + s);
+}
+
+@keyframes scale-in {
+    0% {
+        transform: scale(0);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes scale-in-bounce {
+    0% {
+        transform: scale(0);
+    }
+    95% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes fade-out {
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes light-shine-animation {
+    0% {
+        background-position: 0% 51%;
+    }
+    45% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+@mixin light-shine($content, $delay: 0.3) {
+    &::after {
+        content: $content;
+        background-image: linear-gradient(225deg, transparent 53%, white 55%, transparent 58%);
+        color: transparent;
+        width: 105%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-clip: text;
+        -webkit-background-clip: text;
+        z-index: 999;
+        background-size: 400% 400%;
+        animation: light-shine-animation 12s ease infinite;
+        animation-delay: ($initial-delay + $delay + s);
+    }
+}
+
+@keyframes blip {
+    0% {
+        transform: scale(0) rotate(0deg);
+        opacity: 0;
+    }
+    1% {
+        transform: scale(0) rotate(0deg);
+        opacity: 1;
+    }
+    2% {
+        transform: scale(1.2) rotate(0deg);
+        opacity: 1;
+    }
+    4% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    5% {
+        transform: scale(1) rotate(180deg);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1) rotate(180deg);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(0) rotate(0deg);
+        opacity: 0;
+    }
+}
+
+.spark {
+    line-height: 0;
+    position: absolute;
+    left: -14px;
+    width: 37px;
+    height: 45px;
+    z-index: 999;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='120 250 1700 1200' width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3C!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ --%3E%3Cg%3E%3Ctitle%3Ebackground%3C/title%3E%3Crect fill='none' id='canvas_background' height='402' width='182' y='-1' x='-1'/%3E%3Cg display='none' overflow='visible' y='0' x='0' height='100%25' width='100%25' id='canvasGrid'%3E%3Crect fill='url(%23gridpattern)' stroke-width='0' y='0' x='0' height='100%25' width='100%25'/%3E%3C/g%3E%3C/g%3E%3Cg%3E%3Ctitle%3ELayer 1%3C/title%3E%3Cellipse ry='183' rx='5' id='svg_2' cy='197.0375' cx='274.5' stroke-width='0' stroke='%23000' fill='%23fff'/%3E%3Cellipse transform='rotate(90 274.50000000000006,197.03750610351565) ' ry='183' rx='5' id='svg_3' cy='197.0375' cx='274.5' stroke-width='0' stroke='%23000' fill='%23fff'/%3E%3Cellipse stroke='%23000' transform='rotate(126.69925689697266 276.19342041015625,195.4363708496094) ' ry='90.194158' rx='3.223029' id='svg_4' cy='195.43637' cx='276.193439' stroke-width='0' fill='%23fff'/%3E%3Cellipse stroke='%23000' transform='rotate(-134.6077117919922 276.19342041015625,195.43637084960938) ' ry='90.194158' rx='3.223029' id='svg_5' cy='195.43637' cx='276.193439' stroke-width='0' fill='%23fff'/%3E%3C/g%3E%3C/svg%3E");
+    filter: blur(0.5px);
+    transform: scale(0);
+    animation: blip 12s infinite;
+    animation-delay: ($initial-delay + 2 + s);
+    animation-timing-function: ease-in-out;
+}
+
+/* 
+ *  odd behavior either with the skew being removed with animation working
+ *  or scale in animation glitches out on firefox unless animation-delay is removed, 
+ *  when not using at least the first 2 spans within h1...
+ *  so opting to just keep this with the weird markup/styles
+ *  since it's only used once anyways and currently works fine as is
+ */
+
+.name-container h1 {
+    position: relative;
+    font-family: 'Exo';
+    font-size: 72px;
+    transform: skew(-15deg);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+.name-container h1 span:first-child {
+    position: absolute;
+    background: linear-gradient(
+        #032d50 25%,
+        #00a1ef 35%,
+        #ffffff 50%,
+        #20125f 50%,
+        #8313e7 55%,
+        #ff61af 75%
+    );
+    -webkit-text-stroke: 0.01em #94a0b9;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.first-name {
+    position: relative;
+    user-select: none;
+    @include light-shine('LELAND');
+}
+
+.last-name {
+    top: -36px;
+    user-select: none;
+    @include light-shine('BURLINGAME', 0.377);
+}
+
+.thickness {
+    position: absolute;
+    top: 0;
+    left: 4px;
+    user-select: none;
+    z-index: -1;
+    color: #142d7e;
+    -webkit-text-stroke: 1px rgb(86, 33, 231);
+    background: linear-gradient(#142d7e 50%, #f260ff 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    opacity: 0.4;
+}
+
+@mixin retro-text-cursive {
+    font-family: 'Mr Dafoe';
+    color: white;
+    text-shadow: 0 0 0.05em #fff, 0 0 0.2em #fe05e1, 0 0 0.3em #fe05e1;
+    transform: rotate(-7deg);
+}
+
+.job-title-container {
+    animation-delay: ($initial-delay + 0.5 + s);
+    width: 100%;
+    margin-top: -68px;
+}
+
+.job-title-container h2 {
+    margin: 0;
+    font-size: 48px;
+    text-align: center;
+    width: 100%;
+    @include retro-text-cursive;
+}
+
+.floating {
+    animation: floating 3s ease-in-out infinite alternate;
+}
+
+.pause-on-hover:hover {
+    animation-play-state: paused;
+}
+
+@keyframes floating {
+    0% {
+        transform: translateY(-16px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@mixin links-delay {
+    @for $i from 1 through 3 {
+        &:nth-child(#{$i}) {
+            animation-delay: #{$initial-delay + 0.5 + $i * 0.2}s;
+        }
+    }
+}
+
+.links-row {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.home .links-row {
+    margin-top: 16px;
+    width: 100%;
+    justify-content: space-evenly;
+}
+
+.home .links-row > a {
+    cursor: pointer;
+    padding: 0px 16px;
+    @include links-delay;
+}
+
+.home .links-row > a .coin {
+    height: 48px;
+    width: 48px;
+    margin: 24px auto;
+}
+
+.home .links-row > a .coin:before {
+    height: 48px;
+    width: 48px;
+}
+
+.coin-resume {
+    background-image: url('/assets/img/coins/resume-coin.png');
+
+    &::before {
+        background-image: url('/assets/img/coins/resume-coin.png');
+    }
+}
+
+.coin-github {
+    background-image: url('/assets/img/coins/github-coin.png');
+
+    &::before {
+        background-image: url('/assets/img/coins/github-coin.png');
+    }
+}
+
+.coin-linkedin {
+    background-image: url('/assets/img/coins/linkedin-coin.png');
+
+    &::before {
+        background-image: url('/assets/img/coins/linkedin-coin.png');
+    }
+}
+
+.pop-in {
+    animation: pop-in 0.3s ease-in-out forwards;
+    opacity: 0;
+}
+
+@keyframes pop-in {
+    0% {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    70% {
+        opacity: 1;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+.section-header {
+    padding: 32px 0;
+}
+
+.section-header h3 {
+    font-size: 32px;
+    text-align: center;
+    font-family: 'Fira Code', monospace;
+    font-weight: bold;
+    letter-spacing: -2px;
+    color: #7e7cff;
+}
+
+.section-header p {
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: 'Fira Code', monospace;
+    color: #ff4683;
+}
+
+.section-footer {
+    padding: 32px 0;
+}
+
+.projects-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 1200px;
+    gap: 16px;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+}
+
+.project-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 300px;
+    padding: 32px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    color: white;
+    background-color: #3d12a1;
+    background: linear-gradient(45deg, #371675, #31107e);
+    font-family: Inter, sans-serif;
+    z-index: 1;
+
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        border-radius: 4px;
+    }
+}
+
+.project-card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.project-card-logo {
+    margin-right: 12px;
+    border-radius: 6px;
+}
+
+.project-card-title {
+    font-size: 24px;
+    font-family: 'Fira Code', monospace;
+    font-weight: 700;
+    line-height: 0.9;
+}
+
+.project-card-description {
+    margin-bottom: 16px;
+    font-family: 'Fira Code', monospace;
+}
+
+.project-technologies-list {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    list-style: none;
+    margin-top: auto;
+    margin-bottom: 8px;
+    gap: 8px;
+    padding: 0;
+}
+
+.project-technology {
+    padding: 4px 6px;
+    border-radius: 4px;
+    background-color: rgb(255, 100, 172);
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+}
+
+.project-card-links-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.project-card-link {
+    color: hsl(263, 74%, 85%);
+    padding: 8px;
+    margin: 0 4px;
+    font-size: 20px;
+    outline: none;
+    border-radius: 4px;
+
+    &:last-child {
+        margin: 0;
+    }
+
+    &:hover,
+    &:focus-visible {
+        color: rgb(255, 70, 131);
+    }
+
+    &:focus-visible {
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-bottom: 3px solid #fe05e1;
+        }
+    }
+}
+
+.project-card .github {
+    font-size: 24px;
+    padding: 6px 8px 4px 8px;
+}
+
+.project-card .recycle {
+    padding: 6px 8px 4px 8px;
+
+    &:focus-visible {
+        padding-top: 8px;
+        padding-bottom: 6px;
+    }
+}
+
+@keyframes shine {
+    to {
+        background-position: 200% center;
+    }
+}
+
+.gradient-text {
+    background: linear-gradient(to right, #6056ee, #ee56aa, #ffad60, #ee56aa, #6056ee);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% auto;
+    animation: shine 10s linear infinite;
+}
+
+@media (max-width: 600px) {
+    .home-content {
+        max-width: 410px;
+    }
+    .name-container h1 {
+        font-size: 60px;
+    }
+
+    .last-name {
+        top: -30px;
+    }
+
+    .job-title-container {
+        margin-top: -58px;
+    }
+
+    .job-title-container h2 {
+        font-size: 40px;
+    }
+}
+
+@media (max-width: 450px) {
+    .home-content {
+        max-width: 330px;
+    }
+    .name-container h1 {
+        font-size: 48px;
+    }
+
+    .last-name {
+        top: -24px;
+    }
+
+    .job-title-container {
+        margin-top: -46px;
+    }
+
+    .job-title-container h2 {
+        font-size: 36px;
+    }
+}
+
+@media (max-width: 380px) {
+    .home-content {
+        max-width: 300px;
+    }
+    .name-container h1 {
+        font-size: 42px;
+    }
+
+    .last-name {
+        top: -20px;
+    }
+
+    .job-title-container {
+        margin-top: -40px;
+    }
+
+    .job-title-container h2 {
+        font-size: 32px;
+    }
+}
+
+.marquee {
+    animation-name: marquee;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: normal;
+    animation-duration: 6s;
+
+    @media (min-width: 500px) {
+        animation-duration: 8s;
+    }
+    @media (min-width: 850px) {
+        animation-duration: 11s;
+    }
+    @media (min-width: 1200px) {
+        animation-duration: 15s;
+    }
+}
+
+@keyframes marquee {
+    from {
+        transform: translateX(100vw);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+.availability {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    padding: 2px 4px 2px 1.5em;
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    color: rgb(255, 255, 255);
+    z-index: 5;
+    transition: background-color 0.1s ease-in-out;
+    background-color: transparent;
+    user-select: none;
+
+    &::before {
+        position: absolute;
+        content: '';
+        left: 0.5em;
+        top: 0.48em;
+        width: 0.6em;
+        height: 0.6em;
+        border-radius: 50%;
+        background-color: rgb(78, 216, 119);
+        animation: fade-in 1s infinite alternate;
+    }
+}
+
+.solid {
+    background-color: rgb(255, 127, 67);
+    border-left: 4px solid rgb(255, 123, 0);
+}
+
+.toast-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 99;
+    pointer-events: none;
+}
+
+.toast {
+    display: flex;
+    position: absolute;
+    bottom: 48px;
+    right: 24px;
+    max-width: 320px;
+    width: 100%;
+    margin-left: 8px;
+    box-sizing: border-box;
+    gap: 8px;
+    align-items: center;
+    padding: 16px 24px 16px 12px;
+    background-color: rgb(255, 255, 255);
+    background: linear-gradient(45deg, #2b197c, #33197c);
+    color: rgb(202, 177, 248);
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 14px;
+    font-family: 'Fira Code', monospace;
+    box-shadow: 2px 2px 8px 2px #00000038;
+    pointer-events: initial;
+    transform: translateX(200%);
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.3s ease-in-out;
+
+    @media (max-width: 450px) {
+        right: 8px;
+    }
+
+    @media (max-width: 350px) {
+        right: 0;
+    }
+}
+
+.toast-icon {
+    font-size: 24px;
+}
+
+.toast-body {
+}
+
+.toast-progress-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(45deg, #ea4eff, #ff55a4);
+    transition: width 0.1s linear;
+    border-radius: 0 0 2px 2px;
+}
+
+.toast-close-button {
+    background-color: transparent;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 4px 8px 4px 4px;
+    outline: none;
+    border: none;
+    border-radius: 4px;
+    color: rgb(188, 146, 255);
+    font-family: 'Fira Code', monospace;
+    cursor: pointer;
+
+    &:hover {
+        color: white;
+    }
+}
+
+.toast-pop-in {
+    transform: translateX(0%);
+}

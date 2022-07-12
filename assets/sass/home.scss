@@ -1,0 +1,41 @@
+.wave {
+    position: absolute;
+    overflow: hidden;
+}
+
+@-moz-keyframes spin {
+    100% {
+        -moz-transform: rotate(45deg);
+    }
+}
+@-webkit-keyframes spin {
+    100% {
+        -webkit-transform: rotate(45deg);
+    }
+}
+@keyframes spin {
+    100% {
+        -webkit-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+}
+
+.main-content {
+    height: 300vh;
+    max-width: 1200px;
+    width: 100%;
+    margin: 256px auto;
+    border-radius: 20px;
+    background-color: #00000033;
+    padding: 16px;
+}
+
+.container {
+    height: 100%;
+    width: 100%;
+    border-radius: 20px;
+    background-color: #070624;
+}
+
+body {
+}
